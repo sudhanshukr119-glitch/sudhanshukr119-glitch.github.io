@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudhanshu - Developer Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #c8ff00;
+            --accent2: #ff3cac;
+            --dark: #080810;
+            --darker: #04040a;
+            --card: #0d0d1a;
+            --border: rgba(200, 255, 0, 0.15);
+            --text-dim: rgba(255,255,255,0.45);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--dark);
+            color: white;
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: '';
+            position: fixed; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 9000; opacity: 0.6;
+            animation: noiseShift 0.5s steps(2) infinite;
+        }
+
+        @keyframes noiseShift {
+            0%   { transform: translate(0,0); }
+            25%  { transform: translate(-2%,-2%); }
+            50%  { transform: translate(2%,2%); }
+            75%  { transform: translate(-1%,1%); }
+            100% { transform: translate(1%,-1%); }
+        }
+
+        .bg-grid {
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(rgba(200,255,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200,255,0,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none; z-index: 0;
+        }
+
+        /* ── NAVBAR ── */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+            background-color: rgba(4,4,10,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 48px;
+            position: sticky; top: 0; z-index: 200;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem; letter-spacing: 3px;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(200,255,0,0.5);
+            position: relative; text-decoration: none;
+        }
+
+        .nav-logo::after {
+            content: '';
+            position: absolute; bottom: -4px; left: 0;
+            width: 100%; height: 1px;
+            background: var(--accent); box-shadow: 0 0 8px var(--accent);
+        }
+
+        .nav-links { display: flex; list-style: none; gap: 4px; }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+            padding: 8px 14px;
+            border: 1px solid transparent; border-radius: 2px;
+            transition: all 0.2s ease; display: block;
+        }
+
+        .nav-links li a:hover { color: var(--accent); border-color: var(--border); background: rgba(200,255,0,0.05); }
+
+        /* Hamburger */
+        .hamburger {
+            display: none; flex-direction: column;
+            justify-content: center; gap: 5px;
+            width: 36px; height: 36px;
+            cursor: pointer; z-index: 300;
+            background: none; border: none; padding: 4px;
+        }
+
+        .hamburger span {
+            display: block; width: 100%; height: 2px;
+            background: var(--accent);
+            transition: all 0.3s ease; transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none; position: fixed; inset: 0;
+            background: rgba(4,4,10,0.97);
+            backdrop-filter: blur(20px);
+            z-index: 150;
+            flex-direction: column;
+            justify-content: center; align-items: center; gap: 28px;
+        }
+
+        .mobile-menu.open { display: flex; }
+
+        .mobile-menu a {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem; letter-spacing: 4px;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none; text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .mobile-menu a:hover { color: var(--accent); }
+
+        /* ── HERO ── */
+        .firstsec {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: calc(100vh - 72px);
+            padding: 60px 80px;
+            position: relative; z-index: 1;
+            overflow: hidden; gap: 40px;
+        }
+
+        .firstsec::before {
+            content: 'DEV';
+            position: absolute; right: -40px; top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28vw; color: transparent;
+            -webkit-text-stroke: 1px rgba(200,255,0,0.06);
+            pointer-events: none; letter-spacing: -10px; z-index: 0;
+            animation: bgTextFloat 8s ease-in-out infinite;
+        }
+
+        @keyframes bgTextFloat {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50%       { transform: translateY(-52%) translateX(-10px); }
+        }
+
+        .leftsec { width: 52%; z-index: 1; animation: fadeSlideUp 1s ease forwards; }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .tag-line {
+            font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 20px;
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .tag-line::before {
+            content: ''; display: inline-block;
+            width: 30px; height: 1px;
+            background: var(--accent); box-shadow: 0 0 6px var(--accent);
+        }
+
+        .leftsec h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            line-height: 0.92; letter-spacing: 2px; margin-bottom: 12px;
+        }
+
+        .name-highlight {
+            color: var(--accent); display: block;
+            text-shadow: 0 0 40px rgba(200,255,0,0.3); position: relative;
+        }
+
+        .name-highlight::after {
+            content: ''; position: absolute; left: 0; bottom: 4px;
+            width: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            animation: lineExpand 1.2s 0.5s ease forwards;
+        }
+
+        @keyframes lineExpand { to { width: 100%; } }
+
+        .sub-heading { font-size: 0.85rem; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 6px; }
+
+        #element {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem; color: var(--accent2); letter-spacing: 3px;
+            display: block; margin: 8px 0 32px;
+            text-shadow: 0 0 20px rgba(255,60,172,0.4);
+        }
+
+        .buttons { margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; }
+
+        .btn {
+            padding: 14px 28px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase;
+            cursor: pointer; border: none; position: relative; overflow: hidden;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+        }
+
+        .btn:first-child { background: var(--accent); color: var(--dark); font-weight: 700; }
+
+        .btn:first-child::before {
+            content: ''; position: absolute; inset: 0;
+            background: var(--accent2); transform: translateX(-100%); transition: transform 0.3s ease;
+        }
+
+        .btn:first-child:hover::before { transform: translateX(0); }
+        .btn:first-child:hover { box-shadow: 0 0 30px rgba(200,255,0,0.5); transform: translateY(-2px); }
+
+        .btn:last-child { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
+
+        .btn:last-child:hover {
+            border-color: var(--accent); color: var(--accent);
+            background: rgba(200,255,0,0.05); transform: translateY(-2px);
+        }
+
+        .btn span { position: relative; z-index: 1; }
+
+        .rightsec {
+            width: 38%; display: flex;
+            justify-content: center; align-items: center;
+            z-index: 1; animation: fadeSlideUp 1s 0.3s ease both;
+        }
+
+        /* ── CSS AVATAR ── */
+        .avatar-wrapper { position: relative; width: 300px; height: 360px; }
+
+        .avatar-wrapper::before {
+            content: ''; position: absolute; inset: -2px;
+            background: linear-gradient(135deg, var(--accent), transparent, var(--accent2));
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            animation: borderPulse 4s linear infinite;
+        }
+
+        @keyframes borderPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        /* The CSS avatar replaces the <img> */
+        .css-avatar {
+            width: 100%; height: 100%;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+            position: relative; z-index: 1;
+            background: #0a0a18;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Scanning line effect */
+        .css-avatar::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(200,255,0,0.03) 2px,
+                rgba(200,255,0,0.03) 4px
+            );
+            z-index: 10; pointer-events: none;
+        }
+
+        /* Scan sweep */
+        .css-avatar::after {
+            content: '';
+            position: absolute; top: -100%; left: 0;
+            width: 100%; height: 40%;
+            background: linear-gradient(180deg, transparent, rgba(200,255,0,0.06), transparent);
+            animation: scanSweep 4s ease-in-out infinite;
+            z-index: 11;
+        }
+
+        @keyframes scanSweep {
+            0%   { top: -40%; }
+            100% { top: 120%; }
+        }
+
+        /* SVG figure inside .css-avatar */
+        .avatar-figure {
+            width: 82%; height: 82%;
+            position: relative; z-index: 5;
+        }
+
+        /* Glow orb behind figure */
+        .avatar-glow {
+            position: absolute;
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200,255,0,0.12), transparent 70%);
+            bottom: 60px; left: 50%; transform: translateX(-50%);
+            animation: glowPulse 3s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .avatar-glow-2 {
+            position: absolute;
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,60,172,0.1), transparent 70%);
+            top: 50px; left: 50%; transform: translateX(-50%);
+            animation: glowPulse 3s 1.5s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+        }
+
+        /* Corner circuit lines */
+        .circuit-tl, .circuit-br {
+            position: absolute; width: 60px; height: 60px;
+            z-index: 6;
+        }
+
+        .circuit-tl { top: 12px; left: 12px; }
+        .circuit-br { bottom: 12px; right: 12px; transform: rotate(180deg); }
+
+        .circuit-tl svg, .circuit-br svg { width: 100%; height: 100%; }
+
+        /* Hex grid background inside avatar */
+        .avatar-hex {
+            position: absolute; inset: 0; z-index: 1; opacity: 0.4;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(200,255,0,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,60,172,0.08) 0%, transparent 50%);
+        }
+
+        /* Floating data particles */
+        .particle {
+            position: absolute; z-index: 8;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem; letter-spacing: 1px;
+            color: var(--accent); opacity: 0;
+        }
+
+        .particle:nth-child(1) { top: 15%; left: 8%; animation: particleFade 5s 0s infinite; }
+        .particle:nth-child(2) { top: 30%; right: 6%; animation: particleFade 5s 1s infinite; color: var(--accent2); }
+        .particle:nth-child(3) { top: 60%; left: 6%; animation: particleFade 5s 2s infinite; }
+        .particle:nth-child(4) { top: 75%; right: 8%; animation: particleFade 5s 3s infinite; color: var(--accent2); }
+        .particle:nth-child(5) { top: 85%; left: 30%; animation: particleFade 5s 1.5s infinite; }
+
+        @keyframes particleFade {
+            0%,100% { opacity: 0; transform: translateY(0); }
+            30%, 70% { opacity: 0.7; }
+            50% { opacity: 1; transform: translateY(-6px); }
+        }
+
+        .badge {
+            position: absolute; background: var(--card);
+            border: 1px solid var(--border); padding: 8px 14px;
+            font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; z-index: 2;
+        }
+
+        .badge-1 { top: 20px; right: -50px; color: var(--accent); border-color: rgba(200,255,0,0.3); animation: badgeFloat 4s ease-in-out infinite; }
+        .badge-2 { bottom: 60px; left: -50px; color: var(--accent2); border-color: rgba(255,60,172,0.3); animation: badgeFloat 4s 2s ease-in-out infinite; }
+
+        @keyframes badgeFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        .scroll-indicator {
+            position: absolute; bottom: 32px; left: 80px;
+            display: flex; align-items: center; gap: 12px;
+            font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--text-dim); animation: fadeSlideUp 1s 1s ease both;
+        }
+
+        .scroll-line { width: 40px; height: 1px; background: var(--text-dim); position: relative; overflow: hidden; }
+
+        .scroll-line::after {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%; background: var(--accent);
+            animation: scrollLineMove 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLineMove { 0% { left: -100%; } 100% { left: 100%; } }
+
+        main hr {
+            border: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+            margin: 0 48px; position: relative; z-index: 1;
+        }
+
+        /* ── EXPERIENCE ── */
+        .secondsec {
+            max-width: 1200px; margin: 0 auto;
+            padding: 100px 48px; position: relative; z-index: 1;
+        }
+
+        .section-label {
+            font-size: 0.68rem; letter-spacing: 5px; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 16px;
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .section-label::before { content: '>'; color: var(--accent2); }
+
+        .secondsec h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            letter-spacing: 3px; margin-bottom: 60px; position: relative;
+        }
+
+        .secondsec h1::after {
+            content: ''; position: absolute; bottom: -12px; left: 0;
+            width: 60px; height: 3px; background: var(--accent); box-shadow: 0 0 12px var(--accent);
+        }
+
+        .experience-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1px; background: var(--border); border: 1px solid var(--border);
+        }
+
+        .exp-card {
+            background: var(--card); padding: 36px 28px;
+            position: relative; overflow: hidden; transition: all 0.3s ease;
+        }
+
+        .exp-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 3px; height: 0;
+            background: linear-gradient(180deg, var(--accent), var(--accent2));
+            transition: height 0.4s ease;
+        }
+
+        .exp-card:hover::before { height: 100%; }
+        .exp-card:hover { background: #111120; transform: translateY(-4px); }
+
+        .exp-num { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: rgba(200,255,0,0.08); line-height: 1; margin-bottom: 12px; letter-spacing: 2px; }
+        .exp-icon { width: 36px; height: 36px; background: rgba(200,255,0,0.1); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 16px; }
+        .exp-title { font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
+        .exp-period { font-size: 0.65rem; color: var(--accent); letter-spacing: 2px; margin-bottom: 12px; }
+        .exp-desc { font-size: 0.72rem; color: var(--text-dim); line-height: 1.7; }
+
+        /* ── FOOTER ── */
+        footer { background-color: var(--darker); border-top: 1px solid var(--border); position: relative; z-index: 1; }
+
+        .footer {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px; padding: 60px 80px; max-width: 1200px; margin: 0 auto;
+        }
+
+        .footer-first h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; color: var(--accent); margin-bottom: 12px; }
+        .footer-first p { font-size: 0.72rem; color: var(--text-dim); line-height: 1.8; max-width: 240px; }
+        .footer-col-title { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 20px; }
+
+        .footer ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+        .footer ul li {
+            font-size: 0.72rem; letter-spacing: 1px; color: var(--text-dim);
+            transition: color 0.2s; cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
+
+        .footer ul li::before { content: '→'; color: var(--accent); opacity: 0; transition: opacity 0.2s, transform 0.2s; transform: translateX(-4px); }
+        .footer ul li:hover { color: var(--accent); }
+        .footer ul li:hover::before { opacity: 1; transform: translateX(0); }
+        .footer ul li a { color: inherit; text-decoration: none; }
+
+        footer .footer-rights {
+            text-align: center; color: rgba(255,255,255,0.2); padding: 20px;
+            font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase;
+            border-top: 1px solid var(--border);
+        }
+
+        footer .footer-rights span { color: var(--accent); }
+
+        /* ══════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════ */
+
+        @media (max-width: 1024px) {
+            nav { padding: 0 32px; }
+            .firstsec { padding: 60px 40px; }
+            .leftsec { width: 55%; }
+            .rightsec { width: 40%; }
+            .avatar-wrapper { width: 260px; height: 310px; }
+            .badge-1 { right: -20px; font-size: 0.55rem; }
+            .badge-2 { left: -20px; font-size: 0.55rem; }
+            .secondsec { padding: 80px 40px; }
+            .footer { padding: 60px 40px; gap: 32px; }
+            main hr { margin: 0 32px; }
+            .scroll-indicator { left: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 24px; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+
+            .firstsec {
+                flex-direction: column-reverse;
+                padding: 48px 24px 80px;
+                min-height: auto; gap: 40px; text-align: center;
+            }
+
+            .firstsec::before { font-size: 50vw; }
+            .leftsec { width: 100%; }
+            .tag-line { justify-content: center; }
+            .buttons { justify-content: center; }
+            .rightsec { width: 100%; }
+            .avatar-wrapper { width: 220px; height: 270px; }
+            .badge-1 { right: 0; top: 10px; font-size: 0.52rem; padding: 6px 10px; }
+            .badge-2 { left: 0; bottom: 20px; font-size: 0.52rem; padding: 6px 10px; }
+            .scroll-indicator { display: none; }
+
+            main hr { margin: 0 24px; }
+            .secondsec { padding: 60px 24px; }
+            .experience-grid { grid-template-columns: 1fr 1fr; }
+            .footer { grid-template-columns: 1fr 1fr; padding: 40px 24px; gap: 32px; }
+            .footer-first { grid-column: 1 / -1; }
+        }
+
+        @media (max-width: 480px) {
+            .firstsec { padding: 40px 20px 60px; }
+            .leftsec h1 { font-size: 2.8rem; }
+            #element { font-size: 1.6rem; }
+            .btn { padding: 12px 18px; font-size: 0.68rem; }
+            .avatar-wrapper { width: 180px; height: 220px; }
+            .experience-grid { grid-template-columns: 1fr; }
+            .exp-card { padding: 24px 18px; }
+            .footer { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="" onclick="closeMobileMenu()">Home</a>
+        <a href="about.html" onclick="closeMobileMenu()">About</a>
+        <a href="services.html" onclick="closeMobileMenu()">Services</a>
+        <a href="/" onclick="closeMobileMenu()">Projects</a>
+        <a href="connect.html" onclick="closeMobileMenu()">Contact</a>
+    </div>
+
+    <header>
+        <nav>
+            <a class="nav-logo" href="">Sudhanshu</a>
+            <ul class="nav-links">
+                <li><a href="">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="/">Projects</a></li>
+                <li><a href="connect.html">Contact Me</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="firstsec">
+            <div class="leftsec">
+                <div class="tag-line">Portfolio 2025</div>
+                <h1>Hi, I'm <span class="name-highlight">Sudhanshu</span></h1>
+                <div class="sub-heading">Third-year undergraduate student</div>
+                <span id="element"></span>
+                <div class="buttons">
+                    <button class="btn"><span>Download Resume</span></button>
+                    <button class="btn"><span>Visit Github</span></button>
+                </div>
+            </div>
+            <div class="rightsec">
+                <div class="avatar-wrapper">
+                    <!-- CSS Avatar replaces photo -->
+                    <div class="css-avatar">
+                        <div class="avatar-hex"></div>
+                        <div class="avatar-glow"></div>
+                        <div class="avatar-glow-2"></div>
+
+                        <!-- Floating data snippets -->
+                        <span class="particle">&lt;/dev&gt;</span>
+                        <span class="particle">0x4F</span>
+                        <span class="particle">{ }</span>
+                        <span class="particle">npm</span>
+                        <span class="particle">git</span>
+
+                        <!-- Corner circuit decorations -->
+                        <div class="circuit-tl">
+                            <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 2 H24 V14 H36" stroke="#c8ff00" stroke-width="1.5" opacity="0.6"/>
+                                <path d="M2 2 V24 H14 V36" stroke="#c8ff00" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="2" cy="2" r="2.5" fill="#c8ff00" opacity="0.8"/>
+                                <circle cx="36" cy="14" r="2" fill="#ff3cac" opacity="0.8"/>
+                            </svg>
+                        </div>
+                        <div class="circuit-br">
+                            <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 2 H24 V14 H36" stroke="#ff3cac" stroke-width="1.5" opacity="0.6"/>
+                                <path d="M2 2 V24 H14 V36" stroke="#ff3cac" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="2" cy="2" r="2.5" fill="#ff3cac" opacity="0.8"/>
+                                <circle cx="36" cy="14" r="2" fill="#c8ff00" opacity="0.8"/>
+                            </svg>
+                        </div>
+
+                        <!-- SVG person silhouette -->
+                        <svg class="avatar-figure" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Glow filter -->
+                            <defs>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                    <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                </filter>
+                                <filter id="glow2">
+                                    <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                                    <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                </filter>
+                                <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#c8ff00" stop-opacity="0.9"/>
+                                    <stop offset="100%" stop-color="#ff3cac" stop-opacity="0.7"/>
+                                </linearGradient>
+                                <linearGradient id="faceGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#c8ff00" stop-opacity="0.15"/>
+                                    <stop offset="100%" stop-color="#c8ff00" stop-opacity="0.05"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Body shadow/base -->
+                            <ellipse cx="100" cy="235" rx="55" ry="6" fill="rgba(200,255,0,0.08)"/>
+
+                            <!-- Torso + body outline -->
+                            <path d="M62 130 C55 140 50 165 52 200 L148 200 C150 165 145 140 138 130 Z" 
+                                  fill="rgba(200,255,0,0.05)" stroke="url(#bodyGrad)" stroke-width="1.5" filter="url(#glow)"/>
+
+                            <!-- Shirt/chest details -->
+                            <path d="M75 135 L100 155 L125 135" stroke="#c8ff00" stroke-width="1" opacity="0.4" fill="none"/>
+                            <path d="M85 160 H115" stroke="#c8ff00" stroke-width="0.8" opacity="0.3"/>
+                            <path d="M80 175 H120" stroke="#c8ff00" stroke-width="0.8" opacity="0.2"/>
+                            <path d="M82 190 H118" stroke="#c8ff00" stroke-width="0.8" opacity="0.15"/>
+
+                            <!-- Left arm -->
+                            <path d="M62 130 C50 140 44 165 46 190 L58 192 C56 170 62 148 68 135 Z"
+                                  fill="rgba(200,255,0,0.04)" stroke="#c8ff00" stroke-width="1.2" opacity="0.6" filter="url(#glow)"/>
+
+                            <!-- Right arm -->
+                            <path d="M138 130 C150 140 156 165 154 190 L142 192 C144 170 138 148 132 135 Z"
+                                  fill="rgba(200,255,0,0.04)" stroke="#c8ff00" stroke-width="1.2" opacity="0.6" filter="url(#glow)"/>
+
+                            <!-- Neck -->
+                            <rect x="90" y="100" width="20" height="32" rx="4"
+                                  fill="rgba(200,255,0,0.06)" stroke="#c8ff00" stroke-width="1.2" opacity="0.7"/>
+
+                            <!-- Head -->
+                            <ellipse cx="100" cy="75" rx="34" ry="38"
+                                     fill="url(#faceGrad)" stroke="url(#bodyGrad)" stroke-width="1.8" filter="url(#glow2)"/>
+
+                            <!-- Face inner glow -->
+                            <ellipse cx="100" cy="70" rx="24" ry="28" fill="rgba(200,255,0,0.04)"/>
+
+                            <!-- Eyes -->
+                            <ellipse cx="87" cy="68" rx="6" ry="5" fill="rgba(200,255,0,0.1)" stroke="#c8ff00" stroke-width="1.2" filter="url(#glow)"/>
+                            <ellipse cx="113" cy="68" rx="6" ry="5" fill="rgba(200,255,0,0.1)" stroke="#c8ff00" stroke-width="1.2" filter="url(#glow)"/>
+
+                            <!-- Pupils / iris glow -->
+                            <ellipse cx="87" cy="68" rx="3" ry="3" fill="#c8ff00" opacity="0.9" filter="url(#glow2)"/>
+                            <ellipse cx="113" cy="68" rx="3" ry="3" fill="#c8ff00" opacity="0.9" filter="url(#glow2)"/>
+
+                            <!-- Eye shine -->
+                            <circle cx="89" cy="66" r="1" fill="white" opacity="0.8"/>
+                            <circle cx="115" cy="66" r="1" fill="white" opacity="0.8"/>
+
+                            <!-- Nose bridge -->
+                            <path d="M97 73 L95 84 L100 87 L105 84 L103 73" stroke="#c8ff00" stroke-width="0.8" fill="none" opacity="0.4"/>
+
+                            <!-- Mouth — subtle smile -->
+                            <path d="M91 92 Q100 98 109 92" stroke="#ff3cac" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.8" filter="url(#glow)"/>
+
+                            <!-- Ear left -->
+                            <path d="M66 68 C62 68 60 75 62 82 C64 89 68 88 70 82" stroke="#c8ff00" stroke-width="1.2" fill="none" opacity="0.6"/>
+                            <!-- Ear right -->
+                            <path d="M134 68 C138 68 140 75 138 82 C136 89 132 88 130 82" stroke="#c8ff00" stroke-width="1.2" fill="none" opacity="0.6"/>
+
+                            <!-- Hair / top head accent lines -->
+                            <path d="M70 52 Q80 38 100 37 Q120 38 130 52" stroke="#c8ff00" stroke-width="1.5" fill="none" opacity="0.5" filter="url(#glow)"/>
+                            <path d="M76 46 Q88 32 100 31 Q112 32 124 46" stroke="#c8ff00" stroke-width="1" fill="none" opacity="0.25"/>
+
+                            <!-- Chest badge / logo detail -->
+                            <rect x="90" y="148" width="20" height="14" rx="2"
+                                  fill="rgba(200,255,0,0.1)" stroke="#c8ff00" stroke-width="1" opacity="0.7"/>
+                            <text x="100" y="158" text-anchor="middle" font-family="monospace" font-size="6" fill="#c8ff00" opacity="0.9">&lt;/&gt;</text>
+
+                            <!-- Shoulder lines -->
+                            <path d="M62 130 C72 122 88 118 100 118 C112 118 128 122 138 130"
+                                  stroke="url(#bodyGrad)" stroke-width="1.5" fill="none" filter="url(#glow)"/>
+                        </svg>
+                    </div>
+                    <div class="badge badge-1">✦ Available</div>
+                    <div class="badge badge-2">3rd Year</div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="scroll-line"></div>Scroll
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="secondsec">
+            <div class="section-label">What I have done so far</div>
+            <h1>Work Experience</h1>
+            <div class="experience-grid">
+                <div class="exp-card"><div class="exp-num">01</div><div class="exp-icon">💻</div><div class="exp-title">HTML Developer</div><div class="exp-period">2000 — 2005</div><div class="exp-desc">Building structured, semantic web layouts and interactive frontend interfaces.</div></div>
+                <div class="exp-card"><div class="exp-num">02</div><div class="exp-icon">🎨</div><div class="exp-title">UI Designer</div><div class="exp-period">2000 — 2005</div><div class="exp-desc">Designing clean user interfaces focused on experience and accessibility.</div></div>
+                <div class="exp-card"><div class="exp-num">03</div><div class="exp-icon">⚡</div><div class="exp-title">Frontend Dev</div><div class="exp-period">2000 — 2005</div><div class="exp-desc">Building responsive, performant frontends with modern web technologies.</div></div>
+                <div class="exp-card"><div class="exp-num">04</div><div class="exp-icon">🔧</div><div class="exp-title">Web Developer</div><div class="exp-period">2000 — 2005</div><div class="exp-desc">Full website builds from layout to deployment with clean code practices.</div></div>
+                <div class="exp-card"><div class="exp-num">05</div><div class="exp-icon">🚀</div><div class="exp-title">Video Editor</div><div class="exp-period">2000 — 2005</div><div class="exp-desc">Producing short-form and long-form video content for digital platforms.</div></div>
+                <div class="exp-card"><div class="exp-num">06</div><div class="exp-icon">🌐</div><div class="exp-title">Graphic Designer</div><div class="exp-period">2000 — 2005</div><div class="exp-desc">Creating brand visuals, thumbnails, and marketing graphics for clients.</div></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer">
+            <div class="footer-first">
+                <h3>Sudhanshu</h3>
+                <p>Building digital experiences that matter. Open to collaborations and new opportunities.</p>
+            </div>
+            <div><div class="footer-col-title">Navigation</div><ul><li>Home</li><li><a href="about.html">About</a></li><li><a href="services.html">Services</a></li><li>Projects</li><li><a href="connect.html">Contact</a></li></ul></div>
+            <div><div class="footer-col-title">Social</div><ul><li>GitHub</li><li>LinkedIn</li><li>Twitter</li><li>Dribbble</li><li>YouTube</li></ul></div>
+            <div><div class="footer-col-title">Contact</div><ul><li>Email Me</li><li>Schedule Call</li><li>Resume</li><li>Blog</li><li>Newsletter</li></ul></div>
+        </div>
+        <div class="footer-rights">www.portfolio.com &nbsp;|&nbsp; All rights reserved &nbsp;|&nbsp; Built with <span>♥</span> by Sudhanshu</div>
+    </footer>
+
+    <script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+    <script>
+        var typed = new Typed('#element', { strings: ['Web Developer', 'Video Editor', 'Graphic Designer'], typeSpeed: 50, backSpeed: 30, loop: true });
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+        });
+        function closeMobileMenu() {
+            hamburger.classList.remove('open');
+            mobileMenu.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    </script>
+</body>
+</html>

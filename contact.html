@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me | Sudhanshu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent:#c8ff00;--accent2:#ff3cac;--dark:#080810;--darker:#04040a;--card:#0d0d1a;--border:rgba(200,255,0,0.15);--text-dim:rgba(255,255,255,0.45); }
+        * { margin:0;padding:0;box-sizing:border-box; }
+        body { background-color:var(--dark);color:white;font-family:'Space Mono',monospace;overflow-x:hidden;min-height:100vh; }
+        .bg-grid { position:fixed;inset:0;background-image:linear-gradient(rgba(200,255,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,255,0,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0; }
+        body::after { content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;opacity:0.6;animation:noiseShift 0.5s steps(2) infinite; }
+        @keyframes noiseShift{0%{transform:translate(0,0)}25%{transform:translate(-2%,-2%)}50%{transform:translate(2%,2%)}75%{transform:translate(-1%,1%)}100%{transform:translate(1%,-1%)}}
+
+        nav { display:flex;justify-content:space-between;align-items:center;height:72px;background-color:rgba(4,4,10,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 48px;position:sticky;top:0;z-index:200; }
+        .nav-logo { font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:3px;color:var(--accent);text-shadow:0 0 20px rgba(200,255,0,0.5);position:relative;text-decoration:none; }
+        .nav-logo::after { content:'';position:absolute;bottom:-4px;left:0;width:100%;height:1px;background:var(--accent);box-shadow:0 0 8px var(--accent); }
+        .nav-links { display:flex;list-style:none;gap:4px; }
+        .nav-links li a { text-decoration:none;color:rgba(255,255,255,0.6);font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;border:1px solid transparent;border-radius:2px;transition:all 0.2s ease;display:block; }
+        .nav-links li a:hover { color:var(--accent);border-color:var(--border);background:rgba(200,255,0,0.05); }
+        .hamburger { display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;cursor:pointer;z-index:300;background:none;border:none;padding:4px; }
+        .hamburger span { display:block;width:100%;height:2px;background:var(--accent);transition:all 0.3s ease;transform-origin:center; }
+        .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+        .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+        .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+        .mobile-menu { display:none;position:fixed;inset:0;background:rgba(4,4,10,0.97);backdrop-filter:blur(20px);z-index:150;flex-direction:column;justify-content:center;align-items:center;gap:28px; }
+        .mobile-menu.open { display:flex; }
+        .mobile-menu a { font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:4px;color:rgba(255,255,255,0.6);text-decoration:none;text-transform:uppercase;transition:color 0.2s; }
+        .mobile-menu a:hover { color:var(--accent); }
+
+        main { position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:100px 48px; }
+        @keyframes fadeSlideUp { from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)} }
+        .section-label { font-size:0.68rem;letter-spacing:5px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:12px;animation:fadeSlideUp 0.8s ease both; }
+        .section-label::before { content:'>';color:var(--accent2); }
+        .page-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,5rem);letter-spacing:3px;line-height:0.95;margin-bottom:12px;animation:fadeSlideUp 0.8s 0.1s ease both; }
+        .page-title span { color:var(--accent); }
+        .page-subtitle { font-size:0.78rem;color:var(--text-dim);line-height:1.8;margin-bottom:72px;animation:fadeSlideUp 0.8s 0.2s ease both; }
+
+        .card-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);animation:fadeSlideUp 0.8s 0.3s ease both; }
+
+        .card { background:var(--card);padding:40px 28px;display:flex;flex-direction:column;align-items:flex-start;position:relative;overflow:hidden;transition:background 0.3s ease,transform 0.3s ease; }
+        .card::before { content:'';position:absolute;top:0;left:0;width:3px;height:0;transition:height 0.4s ease; }
+        .card:nth-child(1)::before{background:#0077b5;}
+        .card:nth-child(2)::before{background:white;}
+        .card:nth-child(3)::before{background:#e1306c;}
+        .card:nth-child(4)::before{background:#25d366;}
+        .card:hover::before { height:100%; }
+        .card::after { content:'';position:absolute;inset:0;background:radial-gradient(circle at 0% 0%,rgba(200,255,0,0.04) 0%,transparent 60%);opacity:0;transition:opacity 0.4s;pointer-events:none; }
+        .card:hover::after { opacity:1; }
+        .card:hover { background:#111120;transform:translateY(-4px); }
+
+        .card-num { font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(255,255,255,0.05);line-height:1;margin-bottom:16px;letter-spacing:2px;transition:color 0.3s; }
+        .card:hover .card-num { color:rgba(200,255,0,0.08); }
+        .card-icon { width:48px;height:48px;margin-bottom:20px;filter:grayscale(40%) brightness(1.1);transition:filter 0.3s,transform 0.3s; }
+        .card:hover .card-icon { filter:grayscale(0%) brightness(1.2);transform:scale(1.08); }
+        .card h2 { font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:3px;margin-bottom:10px;color:white; }
+        .card p { font-size:0.7rem;color:var(--text-dim);line-height:1.8;margin-bottom:28px;flex:1; }
+        .card a { display:inline-block;padding:10px 22px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);text-decoration:none;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;transition:all 0.25s ease;position:relative;overflow:hidden;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px)); }
+        .card a::before { content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-100%);transition:transform 0.25s ease;z-index:0; }
+        .card a:hover::before { transform:translateX(0); }
+        .card a:hover { color:var(--dark);border-color:var(--accent);box-shadow:0 0 20px rgba(200,255,0,0.3); }
+        .card a span { position:relative;z-index:1; }
+
+        footer { background-color:var(--darker);border-top:1px solid var(--border);position:relative;z-index:1; }
+        .footer-rights { text-align:center;color:rgba(255,255,255,0.2);padding:20px;font-size:0.65rem;letter-spacing:3px;text-transform:uppercase; }
+        .footer-rights span { color:var(--accent); }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width:1024px) { nav{padding:0 32px;} main{padding:80px 32px;} .card-grid{grid-template-columns:repeat(2,1fr);} }
+        @media (max-width:768px) {
+            nav{padding:0 24px;} .nav-links{display:none;} .hamburger{display:flex;}
+            main{padding:60px 24px;} .page-subtitle{margin-bottom:48px;}
+            .card-grid{grid-template-columns:repeat(2,1fr);}
+            .card{padding:32px 24px;}
+            .card-num{font-size:2.2rem;}
+        }
+        @media (max-width:480px) {
+            main{padding:48px 20px;}
+            .card-grid{grid-template-columns:1fr;}
+            .card{padding:28px 20px;}
+            .card h2{font-size:1.4rem;}
+        }
+    </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" onclick="closeMobileMenu()">Home</a>
+    <a href="about.html" onclick="closeMobileMenu()">About</a>
+    <a href="services.html" onclick="closeMobileMenu()">Services</a>
+    <a href="/" onclick="closeMobileMenu()">Projects</a>
+    <a href="contact.html" onclick="closeMobileMenu()">Contact</a>
+</div>
+
+<header>
+    <nav>
+        <a class="nav-logo" href="index.html">Sudhanshu</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="/">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+</header>
+
+<main>
+    <div class="section-label">Get in touch</div>
+    <h1 class="page-title">Let's <span>Connect.</span></h1>
+    <p class="page-subtitle">Choose a platform below and feel free to reach out anytime.</p>
+
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-num">01</div>
+            <img class="card-icon" src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+            <h2>LinkedIn</h2>
+            <p>Connect with me professionally and view my experience and work history.</p>
+            <a href="https://linkedin.com/in/sks119" target="_blank"><span>Connect →</span></a>
+        </div>
+        <div class="card">
+            <div class="card-num">02</div>
+            <img class="card-icon" src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
+            <h2>GitHub</h2>
+            <p>Check out my projects, open source code, and contributions.</p>
+            <a href="https://github.com/yourusername" target="_blank"><span>Visit →</span></a>
+        </div>
+        <div class="card">
+            <div class="card-num">03</div>
+            <img class="card-icon" src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+            <h2>Instagram</h2>
+            <p>Follow me for creative content, design updates, and behind the scenes.</p>
+            <a href="https://instagram.com/sudhanshu_kr119" target="_blank"><span>Follow →</span></a>
+        </div>
+        <div class="card">
+            <div class="card-num">04</div>
+            <img class="card-icon" src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+            <h2>WhatsApp</h2>
+            <p>Quick chat for collaborations, questions, or just saying hello.</p>
+            <a href="https://wa.me/9155815239" target="_blank"><span>Message →</span></a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-rights">www.portfolio.com &nbsp;|&nbsp; All rights reserved &nbsp;|&nbsp; Built with <span>♥</span> by Sudhanshu</div>
+</footer>
+
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        mobileMenu.classList.toggle('open');
+        document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    function closeMobileMenu() {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+</script>
+</body>
+</html>
